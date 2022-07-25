@@ -30,6 +30,8 @@ center > div.container > div#canvas_table > table > tbody > tr > td {
   border-radius: 15px;
   border: 2px solid black;
   text-align: center;
+  color: white;
+  font-size: 75px;
 }
 
 center > div.container > h2 > div {
