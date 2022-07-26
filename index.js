@@ -65,4 +65,28 @@ getColor = (val = 0) => {
   return colors[val];
 };
 
+document.onkeydown = (e) => {
+  e.preventDefault();
+  switch (e.keyCode) {
+    case 37:
+      getKeyDown("left");
+      break;
+    case 38:
+      getKeyDown("up");
+      break;
+    case 39:
+      getKeyDown("right");
+      break;
+    case 40:
+      getKeyDown("down");
+      break;
+  }
+};
+
+getKeyDown = (keyValue) => {
+  console.log(keyValue);
+};
+
+getKeyDown();
+
 loadTable();
