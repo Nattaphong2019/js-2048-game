@@ -4,19 +4,23 @@ let max = size - 1;
 let isMoved = false;
 let score = 0;
 let excludeIds = [];
-loadTable = () => {
-  let tableHtml = "";
-  tableHtml = "<table><tbody>";
+const loadTable = () => {
+  document.getElementById("canvas_table").innerHTML = "";
+  const table = document.createElement("table");
+  const tbody = document.createElement("tbody");
   for (let r = 0; r < size; r++) {
-    tableHtml += "<tr>";
+    const row = document.createElement("tr");
     for (let c = 0; c < size; c++) {
-      let id = "[" + r + "," + c + "]";
-      tableHtml += `<td id=` + id + `><span></span></td>`;
+      let id = `[${r},${c}]`;
+      const column = document.createElement("td");
+      column.setAttribute("id", id);
+      row.appendChild(column);
     }
-    tableHtml += "</tr>";
+    tbody.appendChild(row);
   }
-  tableHtml += "</tbody></table>";
-  document.getElementById("canvas_table").innerHTML = tableHtml;
+  table.appendChild(tbody);
+  console.log(table);
+  document.getElementById("canvas_table").appendChild(table);
 
   let id1 = getId();
   let id2 = "";
@@ -37,17 +41,17 @@ loadTable = () => {
   return false;
 };
 
-getRandomId = () => {
+const getRandomId = () => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-getId = () => {
+const getId = () => {
   let r = getRandomId();
   let c = getRandomId();
-  return "[" + r + "," + c + "]";
+  return `[${r},${c}]`;
 };
 
-getColor = (val = 0) => {
+const getColor = (val = 0) => {
   const colors = {
     0: "#ffffff",
     2: "#ff0000",
@@ -83,10 +87,24 @@ document.onkeydown = (e) => {
   }
 };
 
-getKeyDown = (keyValue) => {
-  console.log(keyValue);
+const getKeyDown = (keyValue) => {
+  isMoved = false;
+  excludeIds = [];
+
+  for (let r = min; r <= max; r++) {
+    for (let c = min; c <= max; c++) {
+      let id = `[${r},${c}]`;
+      if (document.getElementById(id).innerHTML !== "") {
+        move(id);
+      }
+    }
+  }
 };
 
-getKeyDown();
+const move = (id) => {
+  console.log(id);
+};
+
+move();
 
 loadTable();
