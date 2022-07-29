@@ -92,7 +92,6 @@ document.onkeydown = (e) => {
 const getKeyDown = (keyValue) => {
   isMoved = false;
   excludeIds = [];
-
   for (let r = min; r <= max; r++) {
     for (let c = min; c <= max; c++) {
       let id = `${r},${c}`;
@@ -102,7 +101,7 @@ const getKeyDown = (keyValue) => {
     }
   }
   if (isMoved == true) {
-    console.log("update");
+    update();
   }
   return false;
 };
@@ -159,15 +158,18 @@ const move = (newId, oldId) => {
   const newBox = document.getElementById(newId);
   let oldValue = parseInt(oldBox.innerHTML);
   let newValue = parseInt(newBox.innerHTML);
-  if (oldValue == newValue) {
+  if (newBox.innerHTML != "") {
     if (excludeIds.indexOf(newId) == -1) {
-      excludeIds.push(newId);
-      newBox.innerHTML = oldValue + newValue;
-      newBox.style.backgroundColor = getColor(oldValue + newValue);
-      oldBox.innerHTML = "";
-      oldBox.style.backgroundColor = getColor();
-      isMoved = true;
-      score += oldValue + newValue;
+      if (oldValue == newValue) {
+        excludeIds.push(newId);
+        newBox.innerHTML = oldValue + newValue;
+        newBox.style.backgroundColor = getColor(oldValue + newValue);
+        oldBox.innerHTML = "";
+        oldBox.style.backgroundColor = getColor();
+        isMoved = true;
+        score += oldValue + newValue;
+        return update(score);
+      }
     }
   } else {
     newBox.innerHTML = oldBox.innerHTML;
@@ -176,6 +178,22 @@ const move = (newId, oldId) => {
     oldBox.style.backgroundColor = getColor();
     isMoved = true;
   }
+};
+
+const update = () => {
+  let ids = [];
+  for (let r = min; r <= max; r++) {
+    for (let c = min; c <= max; c++) {
+      let id = `${r},${c}`;
+      if (document.getElementById(id).innerHTML == "") {
+        ids.push(id);
+      }
+    }
+  }
+  let id = ids[Math.floor(Math.random() * ids.length)];
+  const newBox = document.getElementById(id);
+  newBox.innerHTML = 2;
+  newBox.style.backgroundColor = getColor(2);
 };
 
 loadTable();
