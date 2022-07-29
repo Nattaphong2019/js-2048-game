@@ -168,7 +168,8 @@ const move = (newId, oldId) => {
         oldBox.style.backgroundColor = getColor();
         isMoved = true;
         score += oldValue + newValue;
-        return update(score);
+        update(score);
+        return document.onkeydown();
       }
     }
   } else {
