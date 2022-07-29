@@ -11,7 +11,7 @@ const loadTable = () => {
   for (let r = 0; r < size; r++) {
     const row = document.createElement("tr");
     for (let c = 0; c < size; c++) {
-      let id = `[${r},${c}]`;
+      let id = `${r},${c}`;
       const column = document.createElement("td");
       column.setAttribute("id", id);
       row.appendChild(column);
@@ -19,7 +19,6 @@ const loadTable = () => {
     tbody.appendChild(row);
   }
   table.appendChild(tbody);
-  console.log(table);
   document.getElementById("canvas_table").appendChild(table);
 
   let id1 = getId();
@@ -29,11 +28,14 @@ const loadTable = () => {
     if (id1 != id2) break;
   }
 
-  document.getElementById(id1).innerHTML = "2";
-  document.getElementById(id2).innerHTML = "2";
+  const box1 = document.getElementById(id1);
+  const box2 = document.getElementById(id2);
 
-  document.getElementById(id1).style.backgroundColor = getColor(2);
-  document.getElementById(id2).style.backgroundColor = getColor(2);
+  box1.innerHTML = 2;
+  box1.style.backgroundColor = getColor(2);
+
+  box2.innerHTML = 2;
+  box2.style.backgroundColor = getColor(2);
 
   score = 0;
   document.getElementById("score").innerHTML = score;
@@ -48,7 +50,7 @@ const getRandomId = () => {
 const getId = () => {
   let r = getRandomId();
   let c = getRandomId();
-  return `[${r},${c}]`;
+  return `${r},${c}`;
 };
 
 const getColor = (val = 0) => {
@@ -93,18 +95,87 @@ const getKeyDown = (keyValue) => {
 
   for (let r = min; r <= max; r++) {
     for (let c = min; c <= max; c++) {
-      let id = `[${r},${c}]`;
+      let id = `${r},${c}`;
       if (document.getElementById(id).innerHTML !== "") {
-        move(id);
+        checkMove(id, keyValue);
       }
     }
   }
+  if (isMoved == true) {
+    console.log("update");
+  }
+  return false;
 };
 
-const move = (id) => {
-  console.log(id);
+const checkMove = (id, keyValue) => {
+  let ids = `${id}`;
+  let arr_id = ids.split(",");
+  let r = parseInt(arr_id[0]);
+  let c = parseInt(arr_id[1]);
+  let k = 0;
+  let newId = "";
+  let oldId = "";
+  if (keyValue == "left") {
+    if (c != min) {
+      for (k = c - 1; k >= min; k--) {
+        newId = `${r},${k}`;
+        oldId = `${r},${k + 1}`;
+        move(newId, oldId);
+      }
+    }
+    return false;
+  } else if (keyValue == "up") {
+    if (r != min) {
+      for (k = r - 1; k >= min; k--) {
+        newId = `${k},${c}`;
+        oldId = `${k + 1},${c}`;
+        move(newId, oldId);
+      }
+    }
+    return false;
+  } else if (keyValue == "right") {
+    if (c != max) {
+      for (k = c + 1; k <= max; k++) {
+        newId = `${r},${k}`;
+        oldId = `${r},${k - 1}`;
+        move(newId, oldId);
+      }
+    }
+    return false;
+  } else if (keyValue == "down") {
+    if (r != max) {
+      for (k = r + 1; k <= max; k++) {
+        newId = `${k},${c}`;
+        oldId = `${k - 1},${c}`;
+        move(newId, oldId);
+      }
+    }
+    return false;
+  }
 };
 
-move();
+const move = (newId, oldId) => {
+  const oldBox = document.getElementById(oldId);
+  const newBox = document.getElementById(newId);
+  let oldValue = parseInt(oldBox.innerHTML);
+  let newValue = parseInt(newBox.innerHTML);
+  if (oldValue == newValue) {
+    if (excludeIds.indexOf(newId) == -1) {
+      excludeIds.push(newId);
+      newBox.innerHTML = oldValue + newValue;
+      newBox.style.backgroundColor = getColor(oldValue + newValue);
+      oldBox.innerHTML = "";
+      oldBox.style.backgroundColor = getColor();
+      isMoved = true;
+      score += oldValue + newValue;
+    }
+  } else {
+    newBox.innerHTML = oldBox.innerHTML;
+    newBox.style.backgroundColor = oldBox.style.backgroundColor;
+    oldBox.innerHTML = "";
+    oldBox.style.backgroundColor = getColor();
+    isMoved = true;
+  }
+};
 
 loadTable();
