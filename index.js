@@ -92,11 +92,44 @@ document.onkeydown = (e) => {
 const getKeyDown = (keyValue) => {
   isMoved = false;
   excludeIds = [];
-  for (let r = min; r <= max; r++) {
+  if (keyValue == "left") {
+    for (let r = min; r <= max; r++) {
+      for (let c = min; c <= max; c++) {
+        let id = `${r},${c}`;
+        console.log(id);
+        if (document.getElementById(id).innerHTML !== "") {
+          checkMove(id, keyValue);
+        }
+      }
+    }
+  } else if (keyValue == "up") {
     for (let c = min; c <= max; c++) {
-      let id = `${r},${c}`;
-      if (document.getElementById(id).innerHTML !== "") {
-        checkMove(id, keyValue);
+      for (let r = min; r <= max; r++) {
+        let id = `${r},${c}`;
+        console.log(id);
+        if (document.getElementById(id).innerHTML !== "") {
+          checkMove(id, keyValue);
+        }
+      }
+    }
+  } else if (keyValue == "right") {
+    for (let r = min; r <= max; r++) {
+      for (let c = max; c >= min; c--) {
+        let id = `${r},${c}`;
+        console.log(id);
+        if (document.getElementById(id).innerHTML !== "") {
+          checkMove(id, keyValue);
+        }
+      }
+    }
+  } else if (keyValue == "down") {
+    for (let r = min; r <= max; r++) {
+      for (let c = max; c >= min; c--) {
+        let id = `${r},${c}`;
+        console.log(id);
+        if (document.getElementById(id).innerHTML !== "") {
+          checkMove(id, keyValue);
+        }
       }
     }
   }
@@ -114,42 +147,37 @@ const checkMove = (id, keyValue) => {
   let k = 0;
   let newId = "";
   let oldId = "";
-  if (keyValue == "left") {
-    if (c != min) {
-      for (k = c - 1; k >= min; k--) {
-        newId = `${r},${k}`;
-        oldId = `${r},${k + 1}`;
-        move(newId, oldId);
-      }
+  if (keyValue == "left" && c != min) {
+    for (k = c - 1; k >= min; k--) {
+      newId = `${r},${k}`;
+      oldId = `${r},${k + 1}`;
+      move(newId, oldId);
     }
-    return false;
-  } else if (keyValue == "up") {
-    if (r != min) {
-      for (k = r - 1; k >= min; k--) {
-        newId = `${k},${c}`;
-        oldId = `${k + 1},${c}`;
-        move(newId, oldId);
-      }
+    return;
+  }
+  if (keyValue == "up" && r != min) {
+    for (k = r - 1; k >= min; k--) {
+      newId = `${k},${c}`;
+      oldId = `${k + 1},${c}`;
+      move(newId, oldId);
     }
-    return false;
-  } else if (keyValue == "right") {
-    if (c != max) {
-      for (k = c + 1; k <= max; k++) {
-        newId = `${r},${k}`;
-        oldId = `${r},${k - 1}`;
-        move(newId, oldId);
-      }
+    return;
+  }
+  if (keyValue == "right" && c != max) {
+    for (k = c + 1; k <= max; k++) {
+      newId = `${r},${k}`;
+      oldId = `${r},${k - 1}`;
+      move(newId, oldId);
     }
-    return false;
-  } else if (keyValue == "down") {
-    if (r != max) {
-      for (k = r + 1; k <= max; k++) {
-        newId = `${k},${c}`;
-        oldId = `${k - 1},${c}`;
-        move(newId, oldId);
-      }
+    return;
+  }
+  if (keyValue == "down" && r != max) {
+    for (k = r + 1; k <= max; k++) {
+      newId = `${k},${c}`;
+      oldId = `${k - 1},${c}`;
+      move(newId, oldId);
     }
-    return false;
+    return;
   }
 };
 
@@ -159,8 +187,10 @@ const move = (newId, oldId) => {
   let oldValue = parseInt(oldBox.innerHTML);
   let newValue = parseInt(newBox.innerHTML);
   if (newBox.innerHTML != "") {
-    if (excludeIds.indexOf(newId) == -1) {
-      if (oldValue == newValue) {
+    if (oldValue == newValue) {
+      if (excludeIds.indexOf(oldId) == -1) {
+        console.log("old", oldId, oldValue, excludeIds);
+        console.log("new", newId, newValue, excludeIds);
         excludeIds.push(newId);
         newBox.innerHTML = oldValue + newValue;
         newBox.style.backgroundColor = getColor(oldValue + newValue);
@@ -168,10 +198,9 @@ const move = (newId, oldId) => {
         oldBox.style.backgroundColor = getColor();
         isMoved = true;
         score += oldValue + newValue;
-        update(score);
-        return document.onkeydown();
       }
     }
+    return;
   } else {
     newBox.innerHTML = oldBox.innerHTML;
     newBox.style.backgroundColor = oldBox.style.backgroundColor;
@@ -195,6 +224,58 @@ const update = () => {
   const newBox = document.getElementById(id);
   newBox.innerHTML = 2;
   newBox.style.backgroundColor = getColor(2);
+
+  let allFilled = true;
+  for (let r = min; r <= max; r++) {
+    for (let c = min; c <= max; c++) {
+      let id = `${r},${c}`;
+      if (document.getElementById(id).innerHTML == "") {
+        allFilled = false;
+        break;
+      }
+    }
+  }
+  //Update score
+  document.getElementById("score").innerHTML = score;
+  if (allFilled) {
+    checkGameOver();
+  }
 };
+
+function checkGameOver() {
+  let isOver = true;
+  let oldId = "";
+  let newId = "";
+  for (let c = min; c <= max; c++) {
+    for (let r = min; r <= max - 1; r++) {
+      oldId = `${r},${c}`;
+      newId = `${r + 1},${c}`;
+      let oldValue = parseInt(document.getElementById(oldId).innerHTML);
+      let newValue = parseInt(document.getElementById(newId).innerHTML);
+      if (oldValue == newValue) {
+        isOver = false;
+        break;
+      }
+    }
+  }
+  if (isOver == true) {
+    for (let r = min; r <= max; r++) {
+      for (let c = min; c <= max - 1; c++) {
+        oldId = `${r},${c}`;
+        newId = `${r},${c + 1}`;
+        let oldValue = parseInt(document.getElementById(oldId).innerHTML);
+        let newValue = parseInt(document.getElementById(newId).innerHTML);
+        if (oldValue == newValue) {
+          isOver = false;
+          break;
+        }
+      }
+    }
+  }
+  if (isOver) {
+    alert("Game over!");
+  }
+  return false;
+}
 
 loadTable();
