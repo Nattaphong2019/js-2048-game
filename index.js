@@ -56,15 +56,15 @@ const getId = () => {
 const getColor = (val = 0) => {
   const colors = {
     0: "#ffffff",
-    2: "#ff0000",
-    4: "#ff8000",
-    8: "#ffff00",
-    16: "#80ff00",
-    32: "#00ff00",
-    64: "#00ff80",
-    128: "#00ffff",
-    256: "#0080ff",
-    512: "#0000ff",
+    2: "#fd7f6f",
+    4: "#7eb0d5",
+    8: "#b2e061",
+    16: "#bd7ebe",
+    32: "#ffb55a",
+    64: "#ffee65",
+    128: "#beb9db",
+    256: "#fdcce5",
+    512: "#8bd3c7",
     1024: "#8000ff",
     2048: "#ff00ff",
   };
@@ -89,47 +89,64 @@ document.onkeydown = (e) => {
   }
 };
 
-const getKeyDown = (keyValue) => {
+// const getKeyDown = (keyValue) => {
+//   isMoved = false;
+//   excludeIds = [];
+//   if (keyValue == "left") {
+//     for (let r = min; r <= max; r++) {
+//       for (let c = min; c <= max; c++) {
+//         let id = `${r},${c}`;
+//         console.log(id);
+//         if (document.getElementById(id).innerHTML !== "") {
+//           checkMove(id, keyValue);
+//         }
+//       }
+//     }
+//   } else if (keyValue == "up") {
+//     for (let c = min; c <= max; c++) {
+//       for (let r = min; r <= max; r++) {
+//         let id = `${r},${c}`;
+//         console.log(id);
+//         if (document.getElementById(id).innerHTML !== "") {
+//           checkMove(id, keyValue);
+//         }
+//       }
+//     }
+//   } else if (keyValue == "right") {
+//     for (let r = min; r <= max; r++) {
+//       for (let c = max; c >= min; c--) {
+//         let id = `${r},${c}`;
+//         console.log(id);
+//         if (document.getElementById(id).innerHTML !== "") {
+//           checkMove(id, keyValue);
+//         }
+//       }
+//     }
+//   } else if (keyValue == "down") {
+//     for (let r = min; r <= max; r++) {
+//       for (let c = max; c >= min; c--) {
+//         let id = `${r},${c}`;
+//         console.log(id);
+//         if (document.getElementById(id).innerHTML !== "") {
+//           checkMove(id, keyValue);
+//         }
+//       }
+//     }
+//   }
+//   if (isMoved == true) {
+//     update();
+//   }
+//   return false;
+// };
+
+const checkNotNull = (keyValue) => {
   isMoved = false;
   excludeIds = [];
-  if (keyValue == "left") {
-    for (let r = min; r <= max; r++) {
-      for (let c = min; c <= max; c++) {
-        let id = `${r},${c}`;
-        console.log(id);
-        if (document.getElementById(id).innerHTML !== "") {
-          checkMove(id, keyValue);
-        }
-      }
-    }
-  } else if (keyValue == "up") {
+  for (let r = min; r <= max; r++) {
     for (let c = min; c <= max; c++) {
-      for (let r = min; r <= max; r++) {
-        let id = `${r},${c}`;
-        console.log(id);
-        if (document.getElementById(id).innerHTML !== "") {
-          checkMove(id, keyValue);
-        }
-      }
-    }
-  } else if (keyValue == "right") {
-    for (let r = min; r <= max; r++) {
-      for (let c = max; c >= min; c--) {
-        let id = `${r},${c}`;
-        console.log(id);
-        if (document.getElementById(id).innerHTML !== "") {
-          checkMove(id, keyValue);
-        }
-      }
-    }
-  } else if (keyValue == "down") {
-    for (let r = min; r <= max; r++) {
-      for (let c = max; c >= min; c--) {
-        let id = `${r},${c}`;
-        console.log(id);
-        if (document.getElementById(id).innerHTML !== "") {
-          checkMove(id, keyValue);
-        }
+      let id = `${r},${c}`;
+      if (document.getElementById(id).innerHTML !== "") {
+        checkMove(id, keyValue);
       }
     }
   }
