@@ -89,56 +89,6 @@ document.onkeydown = (e) => {
   }
 };
 
-// const getKeyDown = (keyValue) => {
-//   isMoved = false;
-//   excludeIds = [];
-//   if (keyValue == "left") {
-//     for (let r = min; r <= max; r++) {
-//       for (let c = min; c <= max; c++) {
-//         let id = `${r},${c}`;
-//         console.log(id);
-//         if (document.getElementById(id).innerHTML !== "") {
-//           checkMove(id, keyValue);
-//         }
-//       }
-//     }
-//   } else if (keyValue == "up") {
-//     for (let c = min; c <= max; c++) {
-//       for (let r = min; r <= max; r++) {
-//         let id = `${r},${c}`;
-//         console.log(id);
-//         if (document.getElementById(id).innerHTML !== "") {
-//           checkMove(id, keyValue);
-//         }
-//       }
-//     }
-//   } else if (keyValue == "right") {
-//     for (let r = min; r <= max; r++) {
-//       for (let c = max; c >= min; c--) {
-//         let id = `${r},${c}`;
-//         console.log(id);
-//         if (document.getElementById(id).innerHTML !== "") {
-//           checkMove(id, keyValue);
-//         }
-//       }
-//     }
-//   } else if (keyValue == "down") {
-//     for (let r = min; r <= max; r++) {
-//       for (let c = max; c >= min; c--) {
-//         let id = `${r},${c}`;
-//         console.log(id);
-//         if (document.getElementById(id).innerHTML !== "") {
-//           checkMove(id, keyValue);
-//         }
-//       }
-//     }
-//   }
-//   if (isMoved == true) {
-//     update();
-//   }
-//   return false;
-// };
-
 const checkNotNull = (keyValue) => {
   isMoved = false;
   excludeIds = [];
