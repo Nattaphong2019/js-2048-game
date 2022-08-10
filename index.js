@@ -25,7 +25,7 @@ const loadTable = () => {
   let id2 = "";
   while (true) {
     id2 = getId();
-    if (id1 != id2) break;
+    if (id1 !== id2) break;
   }
 
   const box1 = document.getElementById(id1);
@@ -75,16 +75,16 @@ document.onkeydown = (e) => {
   e.preventDefault();
   switch (e.keyCode) {
     case 37:
-      getKeyDown("left");
+      checkNotNull("left");
       break;
     case 38:
-      getKeyDown("up");
+      checkNotNull("up");
       break;
     case 39:
-      getKeyDown("right");
+      checkNotNull("right");
       break;
     case 40:
-      getKeyDown("down");
+      checkNotNull("down");
       break;
   }
 };
